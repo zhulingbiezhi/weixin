@@ -33,13 +33,13 @@ func (u *UserInfo) TableName() string {
 }
 
 type AccessToken struct {
-	Id          int    `orm:"column(id)"`
-	Token       string `json:"access_token" orm:"column(access_token)"`
-	ExpiresTime int    `json:"expires_in" orm:"column(exp_time)"`
-	ErrCode     int    `json:"errcode" orm:"column(err_code)"`
-	ErrMsg      string `json:"errmsg" orm:"column(err_msg)"`
-	CreateTime  string `json:"time" orm:"column(request_time)"`
-	UserId      int    `orm:"column(user_id)"`
+	Id          int       `orm:"column(id)"`
+	Token       string    `json:"access_token" orm:"column(access_token)"`
+	ExpiresTime int       `json:"expires_in" orm:"column(exp_time)"`
+	ErrCode     int       `json:"errcode" orm:"column(err_code)"`
+	ErrMsg      string    `json:"errmsg" orm:"column(err_msg)"`
+	CreateTime  string    `json:"time" orm:"column(request_time)"`
+	UserId      *UserInfo `orm:"reverse(one)"`
 }
 
 func (ac *AccessToken) TableName() string {
