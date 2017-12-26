@@ -7,6 +7,5 @@ import (
 )
 
 func init() {
-	beego.Router("/test", &controllers.TestController{})
-	beego.Router("/ququ", &controllers.QuquController{})
+	beego.Router("/wx", &controllers.MainController{})
 }

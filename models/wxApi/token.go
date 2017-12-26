@@ -2,64 +2,85 @@ package wxApi
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	"github.com/astaxie/beego/orm"
 )
 
 var reqUrl = "https://api.weixin.qq.com"
-var app_id_ququ = "wx5a8f22cee992c742"
-var app_secret_ququ = "d1060a17e8e56ae8a0fb8535c2198f58"
-var app_id_test = "wxe54bf4d47833a264"
-var app_secret_test = "eff81765127bf4b2e8b102ab11454353"
 
-var Access_token = "bcuCnjz6O2ntIUyVdEk7G7LF8PIK2_hWm1CHq0zo-U43yeg9-oJNQP11kFR4gkt0ya9qgf84_BRy_tR1PjuufrcEUQrIK3TeSVYweZKCtoNev1YmZKVO9FUHp96Zo37HHJQcAHAUWD"
+var DB orm.Ormer
 
-type respToken struct {
-	AccessToken string `json:"access_token"`
-	ExpiresTime int    `json:"expires_in"`
-	ErrCode     int    `json:"errcode"`
-	ErrMsg      string `json:"errmsg"`
+func init() {
+	orm.RegisterModel(new(UserInfo), new(AccessToken))
+	DB = orm.NewOrm()
 }
 
-func GetAccessToken(account string) {
-	var url string
-	if account == "ququ" {
-		url = reqUrl + fmt.Sprintf("/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", app_id_ququ, app_secret_ququ)
-	} else if account == "test" {
-		url = reqUrl + fmt.Sprintf("/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", app_id_test, app_secret_test)
-	} else {
-		url = reqUrl + fmt.Sprintf("/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", app_id_test, app_secret_test)
-	}
+type UserInfo struct {
+	Id        int          `orm:"column(id)"`
+	WXToken   string       `orm:"column(wx_token)"`
+	Access    *AccessToken `orm:"rel(one)"`
+	AppId     string       `orm:"column(app_id)"`
+	AppSecret string       `orm:"column(app_secret)"`
+}
 
+func (u *UserInfo) TableName() string {
+	return "user_info"
+}
+
+type AccessToken struct {
+	Id          int    `orm:"column(id)"`
+	Token       string `json:"access_token" orm:"column(access_token)"`
+	ExpiresTime int    `json:"expires_in" orm:"column(exp_time)"`
+	ErrCode     int    `json:"errcode" orm:"column(err_code)"`
+	ErrMsg      string `json:"errmsg" orm:"column(err_msg)"`
+	CreateTime  string `json:"time" orm:"column(request_time)"`
+	UserId      int    `orm:"column(user_id)"`
+}
+
+func (ac *AccessToken) TableName() string {
+	return "access_token"
+}
+func CreateAccessToken(account string) error {
+	user := &UserInfo{WXToken: account}
+	err := DB.Read(&user, "wx_token")
+	if err == orm.ErrNoRows {
+		return errors.New(fmt.Sprintf("user token find error: %s", err.Error()))
+	} else {
+		fmt.Println(user.WXToken, user.AppId)
+	}
+	url := reqUrl + fmt.Sprintf("/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", user.AppId, user.AppSecret)
 	res, err := http.Get(url)
 	if err != nil {
-		fmt.Println("http get error: ", err.Error())
+		return errors.New(fmt.Sprintf("http get error: %s", err.Error()))
 	}
 	defer res.Body.Close()
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("ioutil read response body error: ", err.Error())
+		return errors.New(fmt.Sprintf("ioutil read response body error: %s", err.Error()))
 	}
-	respToken := &respToken{}
+	respToken := &AccessToken{}
 	if err := json.Unmarshal(body, respToken); err != nil {
-		fmt.Println("josn Unmarshal GetAccessToken error: ", err.Error())
-		fmt.Println(string(body))
+		return errors.New(fmt.Sprintf("json Unmarshal GetAccessToken error: %s, body: %s", err.Error(), string(body)))
 	} else {
-		fmt.Println(string(body))
-		if respToken.AccessToken != "" {
-			Access_token = respToken.AccessToken
-			fmt.Println("###############")
-			fmt.Println("new token---", Access_token)
-			fmt.Println("###############")
-			//strconv.ParseInt(respMap["expires_in"], 10, 64)
+		if respToken.Token != "" {
+			user.Access = respToken
+			DB.Insert(respToken)
+			DB.Update(user)
+			fmt.Println("new token---", respToken.Token)
 			t := time.Duration(respToken.ExpiresTime/2) * time.Second
 			expTime := time.Duration(t)
-			fmt.Println(expTime)
 			expires_timer := time.After(expTime)
 			<-expires_timer
-			GetAccessToken("ququ")
+			CreateAccessToken(account)
+		} else {
+			fmt.Println(string(body))
+			return errors.New("can't get access token !")
 		}
 	}
+	return nil
 }
