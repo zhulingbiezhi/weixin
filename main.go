@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "weixin/models"
 	_ "weixin/routers"
 
 	"github.com/astaxie/beego"
