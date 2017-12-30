@@ -18,6 +18,9 @@ func init() {
 	//构造conn连接
 	conn := dbuser + ":" + dbpassword + "@tcp(" + dburl + ")/" + dbName + "?charset=utf8"
 	//注册数据库连接
-	orm.RegisterDataBase("default", "mysql", conn)
+	err := orm.RegisterDataBase("default", "mysql", conn)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("database connect success !")
 }
