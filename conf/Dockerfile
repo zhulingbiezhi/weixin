@@ -6,6 +6,6 @@ WORKDIR $GOPATH/src/weixin
 ADD . $GOPATH/src/weixin
 RUN go build .
 
-EXPOSE 8080
+EXPOSE 9091
 
 ENTRYPOINT ["./weixin"]
