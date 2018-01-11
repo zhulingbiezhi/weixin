@@ -3,7 +3,9 @@ package wxMsg
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 	"time"
+	"weixin/models/smartChat"
 )
 
 type WeixinMsg struct {
@@ -96,7 +98,16 @@ func (msg *WeixinMsg) dealWithText() WeixinMsg {
 	newMsg.ToUserName = msg.FromUserName
 	newMsg.MsgType = "text"
 	newMsg.CreateTime = time.Now().String()
-	newMsg.Content = fmt.Sprintf("this is the type : %s,the context is : %s", msg.MsgType, msg.Content)
+	//newMsg.Content = fmt.Sprintf("this is the type : %s,the context is : %s", msg.MsgType, msg.Content)
+	if strings.Contains(msg.Content, "不支持的类型") {
+		return defaultMsg(&newMsg)
+	} else {
+		var err error
+		newMsg.Content, err = smartChat.Speak(msg.Content)
+		if err != nil {
+			newMsg.Content = fmt.Sprintf("smart chat error: %s", err.Error())
+		}
+	}
 	return newMsg
 }
 func (msg *WeixinMsg) dealWithImage() WeixinMsg {

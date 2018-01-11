@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"weixin/models"
 )
 
 type UserToken struct {
@@ -42,7 +43,7 @@ func QueryAllUser() []string {
 	sql := "select wx_token from user_info"
 	users := make([]UserInfo, 5)
 	var userToken []string
-	_, err := DB.Raw(sql).QueryRows(&users)
+	_, err := models.DB.Raw(sql).QueryRows(&users)
 	if err != nil {
 		fmt.Println("find user error: ", err.Error())
 	} else {

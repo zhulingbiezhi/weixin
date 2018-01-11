@@ -18,6 +18,8 @@ var (
 	serverIP    string
 	sshUser     string
 	sshPassword string
+	DB          orm.Ormer
+	dbTables    = []interface{}{}
 )
 
 func init() {
@@ -50,7 +52,7 @@ func init() {
 		panic(err)
 	}
 	fmt.Println("database connect success !")
-
+	DB = orm.NewOrm()
 }
 
 func get_external_ip() string {
@@ -104,4 +106,8 @@ func tcpTransferDial(addr string) (net.Conn, error) {
 	}
 	fmt.Println(b.String())
 	return mysqlConn, nil
+}
+
+func RegisterModel(v ...interface{}) {
+	dbTables = append(dbTables, v...)
 }

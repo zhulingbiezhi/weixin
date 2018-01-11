@@ -7,17 +7,16 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+	"weixin/models"
 
 	"github.com/astaxie/beego/orm"
 )
 
 var reqUrl = "https://api.weixin.qq.com"
 
-var DB orm.Ormer
-
 func init() {
-	orm.RegisterModel(new(UserInfo), new(AccessToken))
-	DB = orm.NewOrm()
+	//fmt.Println("REGISTER UserInfo , AccessToken")
+	models.RegisterModel(new(UserInfo), new(AccessToken))
 }
 
 type UserInfo struct {
@@ -46,8 +45,9 @@ func (ac *AccessToken) TableName() string {
 	return "access_token"
 }
 func CreateAccessToken(account string) error {
+
 	user := &UserInfo{WXToken: account}
-	err := DB.Read(&user, "wx_token")
+	err := models.DB.Read(&user, "wx_token")
 	if err == orm.ErrNoRows {
 		return errors.New(fmt.Sprintf("user token find error: %s", err.Error()))
 	} else {
@@ -69,8 +69,8 @@ func CreateAccessToken(account string) error {
 	} else {
 		if respToken.Token != "" {
 			user.Access = respToken
-			DB.Insert(respToken)
-			DB.Update(user)
+			models.DB.Insert(respToken)
+			models.DB.Update(user)
 			fmt.Println("new token---", respToken.Token)
 			t := time.Duration(respToken.ExpiresTime/2) * time.Second
 			expTime := time.Duration(t)
