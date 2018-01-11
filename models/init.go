@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"strings"
 
 	"golang.org/x/crypto/ssh"
 
@@ -62,7 +63,7 @@ func get_external_ip() string {
 	}
 	defer resp.Body.Close()
 	data, _ := ioutil.ReadAll(resp.Body)
-	return string(data)
+	return strings.TrimSpace(string(data))
 }
 
 func tcpTransferDial(addr string) (net.Conn, error) {
