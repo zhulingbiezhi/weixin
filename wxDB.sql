@@ -44,13 +44,13 @@ LOCK TABLES `token` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
+-- Table structure for table `user_info`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
+CREATE TABLE `user_info` (
   `id` int(11) NOT NULL,
   `wx_token` varchar(45) NOT NULL,
   `app_id` varchar(256) NOT NULL,
@@ -61,13 +61,13 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `user_info`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'ququ','wx5a8f22cee992c742','d1060a17e8e56ae8a0fb8535c2198f58'),(1,'test','wxe54bf4d47833a264','eff81765127bf4b2e8b102ab11454353');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `user_info` WRITE;
+/*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
+INSERT INTO `user_info` VALUES (0,'ququ','wx5a8f22cee992c742','d1060a17e8e56ae8a0fb8535c2198f58'),(1,'test','wxe54bf4d47833a264','eff81765127bf4b2e8b102ab11454353');
+/*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -79,4 +79,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-28 19:47:41
+-- Dump completed on 2018-01-11 14:39:34
