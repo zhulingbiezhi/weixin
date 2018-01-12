@@ -2,15 +2,15 @@ FROM golang:latest
   
 MAINTAINER huhai <zhulingbiezhi@gmail.com>  
 RUN echo $GOPATH
-WORKDIR $GOPATH/bin
+WORKDIR $GOPATH/src/weixin
 
 RUN cd $GOPATH; \
 	mkdir src; \
 	mkdir bin; \  
     cd src; \  
-    git clone https://github.com/zhulingbiezhi/weixin.git -b dev; \ 
+    git clone https://github.com/zhulingbiezhi/weixin.git -b master; \ 
 	cd weixin; \
-	go build -o ./bin
+	go build 
 	
 EXPOSE 8080
 
