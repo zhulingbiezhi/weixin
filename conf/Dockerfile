@@ -14,4 +14,3 @@ RUN cd $GOPATH; \
 	
 EXPOSE 8080
 
-ENTRYPOINT ["./weixin"]
