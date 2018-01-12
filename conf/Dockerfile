@@ -1,8 +1,8 @@
 FROM golang:latest  
   
 MAINTAINER huhai <zhulingbiezhi@gmail.com>  
-RUN echo $GOPATH
-WORKDIR $GOPATH/bin
+
+WORKDIR $GOPATH/src/weixin
 
 RUN cd $GOPATH; \
 	mkdir src; \
@@ -10,7 +10,7 @@ RUN cd $GOPATH; \
     cd src; \  
     git clone https://github.com/zhulingbiezhi/weixin.git -b dev; \ 
 	cd weixin; \
-	go build -o ./bin
+	go build 
 	
 EXPOSE 8080
 
