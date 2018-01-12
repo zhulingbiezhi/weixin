@@ -8,7 +8,7 @@ RUN cd $GOPATH; \
 	mkdir src; \
 	mkdir bin; \  
     cd src; \  
-    git clone https://github.com/zhulingbiezhi/weixin.git -b $ENV; \ 
+    git clone https://github.com/zhulingbiezhi/weixin.git -b dev; \ 
 	cd weixin; \
 	go build -o ../bin
 	
