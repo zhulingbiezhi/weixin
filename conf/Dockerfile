@@ -10,7 +10,8 @@ RUN cd $GOPATH; \
     cd src; \  
     git clone https://github.com/zhulingbiezhi/weixin.git -b dev; \ 
 	cd weixin; \
-	go build -o ../bin
+	go build -o ./bin
 	
 EXPOSE 8080
 
+ENTRYPOINT ["./weixin"]
