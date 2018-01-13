@@ -8,8 +8,9 @@
 docker run zhulingbiezhi/weixin_auto_build:dev -p 9091:8080
 
 ############################################################
+
 ############################################################
 
-docker run zhulingbiezhi/weixin_auto_build:dev -p 9091:8080
+docker run zhulingbiezhi/weixin_auto_build:master -p 9090:8080
 
 ############################################################
