@@ -75,15 +75,25 @@ func tcpTransferDial(addr string) (net.Conn, error) {
 	//
 	// To authenticate with the remote server you must pass at least one
 	// implementation of AuthMethod via the Auth field in ClientConfig.
+	fmt.Println(os.Getenv("SSH_KEY_PATH"))
+	d,err:=ioutil.ReadFile(os.Getenv("SSH_KEY_PATH"))
+	if err!=nil{
+		return nil,fmt.Errorf("ioutils read file error: %s",err.Error())
+	}
+	signer,err := ssh.ParsePrivateKey(d)
+	if err!=nil{
+		return nil,err
+	}
 	config := &ssh.ClientConfig{
 		User: sshUser,
 		Auth: []ssh.AuthMethod{
-			ssh.Password(sshPassword),
+			ssh.PublicKeys(signer),
+			//ssh.Password(sshPassword),
 		},
-		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			return nil
-		},
+
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
+
 	client, err := ssh.Dial("tcp", fmt.Sprintf("%s:22", serverIP), config)
 	if err != nil {
 		panic("Failed to dial: " + serverIP + err.Error())
