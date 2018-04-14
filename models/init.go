@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 
 	"golang.org/x/crypto/ssh"
@@ -31,7 +32,8 @@ func init() {
 
 	serverIP = beego.AppConfig.String("server_ip")
 	sshUser = beego.AppConfig.String("ssh_user")
-	sshPassword = beego.AppConfig.String("ssh_password")
+	sshPassword = os.Getenv("SSH_PASS_WORD")
+	//sshPassword = beego.AppConfig.String("ssh_password")
 
 	//注册mysql Driver
 	orm.RegisterDriver("mysql", orm.DRMySQL)
