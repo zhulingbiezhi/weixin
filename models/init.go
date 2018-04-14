@@ -34,7 +34,7 @@ func init() {
 	sshUser = beego.AppConfig.String("ssh_user")
 	sshPassword = os.Getenv("SSH_PASS_WORD")
 	//sshPassword = beego.AppConfig.String("ssh_password")
-
+	fmt.Println("the SSH_PASS_WORD is ",sshPassword)
 	//注册mysql Driver
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 
