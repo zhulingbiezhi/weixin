@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"weixin/wxApi"
+	"weixin/models/wxApi"
 )
 
 var json_menu = `{
@@ -49,7 +49,7 @@ func CreateMenu() {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.
+
 	}
 	defer resp.Body.Close()
 

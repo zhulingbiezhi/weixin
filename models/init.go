@@ -13,7 +13,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"github.com/go-sql-driver/mysql"
+	//"github.com/go-sql-driver/mysql"
 )
 
 var (
@@ -39,16 +39,17 @@ func init() {
 	//注册mysql Driver
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 
-	var conn string
-	external_ip := get_external_ip()
-	if external_ip != serverIP {
-		mysql.RegisterDial("mysql+tcp", tcpTransferDial)
-		conn = dbuser + ":" + dbpassword + "@mysql+tcp(" + dburl + ")/" + dbName + "?charset=utf8"
-		fmt.Println("Foreigner ip: ", external_ip)
-	} else {
-		conn = dbuser + ":" + dbpassword + "@tcp(" + dburl + ")/" + dbName + "?charset=utf8"
-		fmt.Println("Localhost ip")
-	}
+	//var conn string
+	//external_ip := get_external_ip()
+	//if external_ip != serverIP {
+	//	mysql.RegisterDial("mysql+tcp", tcpTransferDial)
+	//	conn = dbuser + ":" + dbpassword + "@mysql+tcp(" + dburl + ")/" + dbName + "?charset=utf8"
+	//	fmt.Println("Foreigner ip: ", external_ip)
+	//} else {
+	//	conn = dbuser + ":" + dbpassword + "@tcp(" + dburl + ")/" + dbName + "?charset=utf8"
+	//	fmt.Println("Localhost ip")
+	//}
+	conn := dbuser + ":" + dbpassword + "@tcp(" + dburl + ")/" + dbName + "?charset=utf8"
 
 	err := orm.RegisterDataBase("default", "mysql", conn)
 
