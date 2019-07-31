@@ -4,9 +4,4 @@ go:
   - master
 
 install:
-  - mkdir -p $GOPATH/src/weixin
-  - mv $TRAVIS_BUILD_DIR/ $GOPATH/src/weixin/
-  - echo $TRAVIS_BUILD_DIR
-  - echo $GOPATH
-  - ls $GOPATH/src/weixin
-  - ls $TRAVIS_BUILD_DIR
+  - mv $TRAVIS_BUILD_DIR $GOPATH/src
