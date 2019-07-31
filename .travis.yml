@@ -6,3 +6,5 @@ go:
 install:
   - mkdir -p $GOPATH/src/weixin
   - mv $TRAVIS_BUILD_DIR $GOPATH/src/weixin
+  - echo $TRAVIS_BUILD_DIR
+  - echo $GOPATH
