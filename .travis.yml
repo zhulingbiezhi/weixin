@@ -1,9 +1,8 @@
 language: go
 
 go:
-  - master # get the latest version from source
+  - master
   - 1.10.x
 install:
-  # Add Godeps dependencies to GOPATH and PATH
-  - export GOPATH="${TRAVIS_BUILD_DIR}/zhulingbiezhi/:$GOPATH"
-  - export PATH="${TRAVIS_BUILD_DIR}/zhulingbiezhi/bin:$PATH"
+  - mkdir -p $GOPATH/src/weixin
+  - mv $TRAVIS_BUILD_DIR $GOPATH/src/weixin
